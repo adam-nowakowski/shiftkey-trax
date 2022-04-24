@@ -18,6 +18,10 @@ class CreateCarsTable extends Migration
             $table->string('make');
             $table->string('model');
             $table->year('year');
+            $table->integer('trip_count')->default(0);
+            $table->float('trip_miles')->default(0);
+            $table->integer('user_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
