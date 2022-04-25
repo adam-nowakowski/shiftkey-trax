@@ -99,6 +99,8 @@ class CarTest extends TestCase
     {
         $car = factory(Car::class)->create();
 
+        $this->signIn();
+
         $this->json('delete', route('cars.destroy', [
             'car' => $car
         ]))->assertStatus(403);

@@ -27,7 +27,7 @@ class SaveRequest extends FormRequest
         return [
             'year' => 'required|integer|max:' . today()->year,
             'make' => 'required|string',
-            'model' => 'string',
+            'model' => 'required|string',
             'trip_count' => 'required',
             'trip_miles' => 'required',
             'user_id' => 'required',
