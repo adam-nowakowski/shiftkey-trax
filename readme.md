@@ -47,7 +47,7 @@ git submodule update --init --recursive
 cp laradock-env laradock/.env
 cp createdb.sql laradock/mariadb/docker-entrypoint-initdb.d/. 
 cd laradock
-docker-compose build --no-cache nginx workspace mariadb
+docker-compose build --no-cache nginx workspace mariadb php-fpm
 docker-compose up -d nginx mariadb workspace
 docker-compose exec workspace composer install
 docker-compose exec workspace npm install
