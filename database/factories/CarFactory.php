@@ -14,5 +14,6 @@ $factory->define(Car::class, function (Faker $faker) {
         'trip_count' => $faker->numberBetween(),
         'trip_miles' => $faker->randomFloat(2, 0, 100),
         'user_id' => $faker->numberBetween(),
+        'deleted_at' => null,
     ];
 });

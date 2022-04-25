@@ -6,12 +6,14 @@ use Carbon\Carbon;
 Route::middleware('auth:api')->group(function () {
     Route::get('/user', 'AppController@getUser');
 
-    Route::prefix('cars')->group(function() {
-        Route::get('/', 'CarController@index');
-        Route::get('/show/{car}', 'CarController@show');
-        Route::post('/store', 'CarController@store');
-        Route::delete('/destroy/{car}', 'CarController@destroy');
-    });
+    Route::prefix('cars')
+        ->as('cars.')
+        ->group(function () {
+            Route::get('/', 'CarController@index')->name('index');
+            Route::get('/show/{car}', 'CarController@show')->name('show');
+            Route::post('/store', 'CarController@store')->name('store');
+            Route::delete('/destroy/{car}', 'CarController@destroy')->name('destroy');
+        });
 });
 
 
