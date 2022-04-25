@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Car;
+namespace App\Http\Requests;
 
 use App\Models\Car;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class SaveRequest extends FormRequest
+class CarSaveRequest extends FormRequest
 {
     public function authorize(): bool
     {

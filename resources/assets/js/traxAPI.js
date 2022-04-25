@@ -2,6 +2,9 @@ let traxAPI = {
     getCarsEndpoint() {
         return '/api/cars/'
     },
+    getAllCarsEndpoint() {
+        return '/api/cars/all'
+    },
     getCarEndpoint(id) {
         return '/api/cars/show/' + id;
     },
@@ -11,13 +14,11 @@ let traxAPI = {
     deleteCarEndpoint(id) {
         return '/api/cars/destroy/' + id;
     },
-
-
     getTripsEndpoint() {
-        return '/api/mock-get-trips';
+        return '/api/trips/';
     },
     addTripEndpoint() {
-        return 'api/mock-add-trip'
+        return 'api/trips/store'
     }
 }
 

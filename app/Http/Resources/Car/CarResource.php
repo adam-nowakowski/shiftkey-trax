@@ -15,6 +15,8 @@ class CarResource extends JsonResource
                 'year' => $this->year,
                 'trip_count' => $this->trip_count,
                 'trip_miles' => $this->trip_miles,
+                'owner' => $this->user->name,
+                'can_delete' => $this->user_id === auth()->id(),
             ]
         ];
     }

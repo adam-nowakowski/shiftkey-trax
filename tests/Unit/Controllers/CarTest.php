@@ -76,6 +76,28 @@ class CarTest extends TestCase
         $this->assertDatabaseHas($carTable, $carData);
     }
 
+    public function testAdditionalAttributesAreAddedWhileStoringTheCar()
+    {
+        $this->signIn();
+
+        $car = factory(Car::class)->make();
+        $carData = $car->toArray();
+
+        self::assertNotEquals($this->user->id, $car->user_id);
+        self::assertNotEquals(0, $car->trip_count);
+        self::assertNotEquals(0, $car->trip_miles);
+
+        unset($carData['trip_count'], $carData['trip_miles'], $carData['user_id'], $carData['deleted_at']);
+
+        $this->post(route('cars.store'), $carData);
+
+        $addedCar = Car::orderBy('id', 'desc')->first();
+
+        self::assertEquals($this->user->id, $addedCar->user_id);
+        self::assertEquals(0, $addedCar->trip_count);
+        self::assertEquals(0, $addedCar->trip_miles);
+    }
+
     public function testDestroyMethodDeletesCar()
     {
         $this->signIn();

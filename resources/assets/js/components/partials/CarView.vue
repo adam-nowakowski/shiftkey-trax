@@ -5,7 +5,8 @@
                 <h1>{{year}} {{make}} {{model}}</h1>
             </v-flex>
             <v-flex xs2 style="text-align: right">
-                <v-btn class="error" @click="deleteSelected">Delete</v-btn>
+                <v-btn v-if="can_delete" class="error" @click="deleteSelected" >Delete</v-btn>
+                <v-chip v-else color="error" text-color="white">Only owner can delete this car</v-chip>
             </v-flex>
         </v-layout>
         <v-layout row>
@@ -22,6 +23,14 @@
             </v-flex>
             <v-flex xs9>
                 <h3>{{trip_miles}}</h3>
+            </v-flex>
+        </v-layout>
+        <v-layout row>
+            <v-flex xs3>
+                <h3>Owner</h3>
+            </v-flex>
+            <v-flex xs9>
+                <h3>{{owner}}</h3>
             </v-flex>
         </v-layout>
 
@@ -45,7 +54,9 @@
                 make: null,
                 model: null,
                 trip_count: null,
-                trip_miles: null
+                trip_miles: null,
+                owner: null,
+                can_delete: false,
             }
         },
         watch: {},
@@ -59,6 +70,8 @@
                         this.model = response.data.data.model;
                         this.trip_count = response.data.data.trip_count;
                         this.trip_miles = response.data.data.trip_miles;
+                        this.owner = response.data.data.owner;
+                        this.can_delete = response.data.data.can_delete;
                     }).catch(e => {
                     console.log(e);
                 });

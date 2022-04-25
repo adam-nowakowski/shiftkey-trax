@@ -2,31 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Car\SaveRequest;
+use App\Http\Requests\CarSaveRequest;
 use App\Http\Resources\Car\CarCollection;
 use App\Http\Resources\Car\CarResource;
 use App\Models\Car;
 
 class CarController extends Controller
 {
-    public function index(): CarCollection
+    public function index(bool $all = false): CarCollection
     {
-        return new CarCollection(Car::get([
-            'id',
-            'make',
-            'model',
-            'year'
-        ]));
+        $carsData = $all ? Car::withTrashed()->get() : Car::get();
+
+        return new CarCollection($carsData);
     }
 
-    public function store(SaveRequest $request)
+    public function store(CarSaveRequest $request)
     {
         Car::create($request->validated());
     }
 
-    public function show(Car $car): CarResource
+    public function show(int $carId): CarResource
     {
-        return new CarResource($car);
+         return new CarResource(Car::withTrashed()->find($carId));
     }
 
     public function destroy(Car $car)

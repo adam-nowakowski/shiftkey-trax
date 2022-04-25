@@ -1,10 +1,9 @@
 <?php
 
-use App\Models\Car;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class CarSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,8 +12,6 @@ class CarSeeder extends Seeder
      */
     public function run()
     {
-        factory(Car::class, 10)->create([
-            'user_id' => User::inRandomOrder()->value('id') ?: rand()
-        ]);
+        factory(User::class)->create();
     }
 }

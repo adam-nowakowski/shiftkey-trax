@@ -10,7 +10,7 @@ $factory->define(Trip::class, function (Faker $faker) {
     return [
         'date' => $faker->date(),
         'miles' => $faker->randomFloat(2, 0, 100),
-        'total' => $faker->randomFloat(2, 0, 100),
+        'user_id' => $faker->numberBetween(),
         'car_id' => $faker->numberBetween(),
     ];
 });

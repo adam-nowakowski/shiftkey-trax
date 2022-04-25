@@ -54,7 +54,7 @@
         computed: {},
         methods: {
             fetch() {
-                axios.get(traxAPI.getCarsEndpoint())
+                axios.get(traxAPI.getCarsEndpoint() + true)
                     .then(response => {
                         this.items = response.data.data;
                     }).catch(e => {
