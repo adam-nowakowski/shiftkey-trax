@@ -14,7 +14,9 @@ class CarSeeder extends Seeder
     public function run()
     {
         factory(Car::class, 10)->create([
-            'user_id' => User::inRandomOrder()->value('id') ?: rand()
+            'user_id' => User::inRandomOrder()->value('id') ?: rand(),
+            'trip_count' => 0,
+            'trip_miles' => 0,
         ]);
     }
 }
