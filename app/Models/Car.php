@@ -23,6 +23,10 @@ class Car extends Model
         'user_id',
     ];
 
+    protected $casts = [
+        'year' => 'integer'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

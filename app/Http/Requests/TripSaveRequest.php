@@ -18,7 +18,6 @@ class TripSaveRequest extends FormRequest
     {
         $this->merge([
             'user_id' => auth()->id(),
-            'date' => Carbon::parse($this->date),
         ]);
     }
 
@@ -30,5 +29,12 @@ class TripSaveRequest extends FormRequest
             'miles' => 'required|numeric',
             'user_id' => 'required',
         ];
+    }
+
+    public function validated(): array
+    {
+        return array_merge(parent::validated(), [
+            'date' => Carbon::parse($this->date),
+        ]);
     }
 }

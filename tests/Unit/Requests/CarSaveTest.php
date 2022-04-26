@@ -3,7 +3,6 @@
 namespace Tests\Unit\Requests;
 
 use App\Models\Car;
-use Illuminate\Support\Facades\Lang;
 use Tests\TestCase;
 
 class CarSaveTest extends TestCase
@@ -61,16 +60,5 @@ class CarSaveTest extends TestCase
             $this->getErrorMessage('year', 'max', today()->year)['numeric'],
             $response->getOriginalContent()['errors']['year'][0]
         );
-    }
-
-    private function getErrorMessage(string $field, string $type, int $max = null)
-    {
-        $error = str_replace(':attribute', $field, Lang::get("validation.{$type}"));
-
-        if ($max) {
-            return str_replace(':max', $max, $error);
-        }
-
-        return $error;
     }
 }

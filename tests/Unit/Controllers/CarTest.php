@@ -9,13 +9,13 @@ class CarTest extends TestCase
 {
     public function testOnlyLoggedUserCanSeeCarsData()
     {
-        $car = factory(Car::class)->create();
+        $carData = factory(Car::class)->make()->toArray();
+        $car = factory(Car::class)->create($carData);
 
         $this->json('get', route('cars.index'))->assertUnauthorized();
-        $this->json('post', route('cars.store'), factory(Car::class)->make()->toArray())
-            ->assertUnauthorized();
+        $this->json('post', route('cars.store'), $carData)->assertUnauthorized();
         $this->json('get', route('cars.show', [
-            'car' => $car
+            'car_id' => $car
         ]))->assertUnauthorized();
         $this->json('delete', route('cars.destroy', [
             'car' => $car
@@ -28,10 +28,9 @@ class CarTest extends TestCase
         ]);
 
         $this->json('get', route('cars.index'))->assertOk();
-        $this->json('post', route('cars.store'), factory(Car::class)->make()->toArray())
-            ->assertOk();
+        $this->json('post', route('cars.store'), $carData)->assertOk();
         $this->json('get', route('cars.show', [
-            'car' => $car
+            'car_id' => $car
         ]))->assertOk();
         $this->json('delete', route('cars.destroy', [
             'car' => $car
@@ -57,6 +56,44 @@ class CarTest extends TestCase
         ]);
 
         self::assertEquals($carsCount, $this->get(route('cars.index'))->getOriginalContent()->count());
+    }
+
+    public function testIndexMethodCanReturnAllCarsList()
+    {
+        $this->signIn();
+
+        $carsCount = Car::count();
+
+        factory(Car::class)->create([
+            'deleted_at' => now()
+        ]);
+
+        $trashedCarsCount = Car::withTrashed()->count();
+
+        self::assertEquals($carsCount, $this->get(route('cars.index'))->getOriginalContent()->count());
+        self::assertEquals($trashedCarsCount, $this->get(route('cars.index', ['all' => true]))->getOriginalContent()->count());
+    }
+
+    public function testShowMethodCanReturnCarData()
+    {
+        $this->signIn();
+
+        $car = factory(Car::class)->create([
+            'user_id' => $this->user->id,
+            'deleted_at' => now()
+        ]);
+
+        $responseContent = json_decode($this->get(route('cars.show', [
+            'car_id' => $car->id
+        ]))->getContent())->data;
+
+        self::assertSame($car->make, $responseContent->make);
+        self::assertSame($car->model, $responseContent->model);
+        self::assertSame($car->year, $responseContent->year);
+        self::assertSame($car->trip_count, $responseContent->trip_count);
+        self::assertSame($car->trip_miles, $responseContent->trip_miles);
+        self::assertSame($car->user->name, $responseContent->owner);
+        self::assertTrue($responseContent->can_delete);
     }
 
     public function testStoreMethodStoresNewCar()
